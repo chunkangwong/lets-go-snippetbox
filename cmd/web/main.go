@@ -8,16 +8,18 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+
+	"snippetbox.wck.net/internal/models"
 )
 
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+	snipepts *models.SnippetModel
 }
 
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
-
 	dsn := flag.String("dsn", "web:541994@/snippetbox?parseTime=true", "MySQL data source name")
 
 	flag.Parse()
@@ -35,6 +37,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
+		snipepts: &models.SnippetModel{DB: db},
 	}
 
 	srv := &http.Server{
